@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AstromenList;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
+Route::get('/', [AstromenList::class, 'render'])->name('home');
+Route::post('/edit', [AstromenList::class, 'editFormSent'])->name('edit');
+Route::get('/astroman_exists', [AstromenList::class, 'astromanExists'])->name('astroman_exists');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
