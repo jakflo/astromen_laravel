@@ -46,24 +46,23 @@ class AstromenListRow extends React.Component
     constructor(props) 
     {
         super(props);
-//        this.state = {
-//
-//        };
+        this.state = {
+            marked: false
+        };
     }
     
     render()
     {
-	var toto = this;
         return (
             <>
-                <tr>
+                <tr className={this.state.marked ? 'marked' : ''}>
                     <td>{this.props.rowData.first_name}</td>
                     <td>{this.props.rowData.last_name}</td>
                     <td>{this.props.rowData.dobCz}</td>
                     <td>{this.props.rowData.skill_names.join(', ')}</td>
                     <td>
-                    <button type="button" data-id={this.props.rowNumber} onClick={() => {this.astromanEdited(toto)}}>Editovat</button>
-                        <button type="button">Smazat</button>
+                    <button type="button" data-id={this.props.rowNumber} onClick={() => {this.astromanEdited();}}>Editovat</button>
+                    <button type="button">Smazat</button>
                     </td>
                 </tr>
             </>
@@ -72,13 +71,24 @@ class AstromenListRow extends React.Component
     
     componentDidMount()
     {
-        
+        var toto = this;
+        document.addEventListener('unmarkRow', function(event) {
+            toto.setState({marked: false});
+        });
     }
     
-    astromanEdited(toto)
-    {	
-        var formEvent = new CustomEvent('astromanFormEditSetData', {detail:{data: toto.props.rowData}});
+    astromanEdited()
+    {
+        this.unmarkRows();
+        this.setState({marked: true});
+        var formEvent = new CustomEvent('astromanFormEditSetData', {detail:{data: this.props.rowData}});
         document.dispatchEvent(formEvent);
-    }    
+    }
+    
+    unmarkRows()
+    {
+        var setFormErrorsEvent = new CustomEvent('unmarkRow');
+        document.dispatchEvent(setFormErrorsEvent);
+    }
     
 }

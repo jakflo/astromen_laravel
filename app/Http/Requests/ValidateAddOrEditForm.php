@@ -35,11 +35,16 @@ class ValidateAddOrEditForm extends FormRequest
             function(Validator $validator) use($astromenModel) {
             if ($astromenModel->isAstromanExists(
                     (int)$validator->getValue('id'), 
-                    $validator->getValue('first_name'), 
-                    $validator->getValue('last_name'), 
+                    trim($validator->getValue('first_name')), 
+                    trim($validator->getValue('last_name')), 
                     $validator->getValue('DOB'))
                     ) {
                     $validator->errors()->add('id', 'Astronaut již existuje');
+                }
+            }, 
+            function(Validator $validator) use($astromenModel) {
+                if ($validator->getValue('id') != 0 && $astromenModel->getAstroman((int)$validator->getValue('id')) === null) {
+                    $validator->errors()->add('id', 'Astronaut nenalezen');
                 }
             }, 
             function(Validator $validator) use($skillModel) {

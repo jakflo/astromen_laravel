@@ -80,8 +80,10 @@ class Skill
             $newRows[] = ['astroman_id' => $astromanId, 'skill_id' => $this->findOrCreateNewSkill($itemName)];
         }
         
-        array_multisort($newRows, SORT_ASC, SORT_REGULAR, array_column($newRows, 'skill_id'));
-        DB::table('astroman_has_skill')->insert($newRows);
+        if (count($newRows) > 0) {
+            array_multisort($newRows, SORT_ASC, SORT_REGULAR, array_column($newRows, 'skill_id'));
+            DB::table('astroman_has_skill')->insert($newRows);
+        }
     }
     
     protected function findOrCreateNewSkill(string $skillName): int

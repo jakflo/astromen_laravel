@@ -27,6 +27,11 @@ class AstromenList
 //                ;
     }
     
+    public function getAstroman(int $id): Astroman|null
+    {
+        return Astroman::find($id);
+    }
+    
     public function processCollection($collection)
     {
         $list = [];
@@ -65,8 +70,8 @@ class AstromenList
             throw new \Exception('Astronaut nenalezen');
         }
         
-        $astroman->first_name = $firstName;
-        $astroman->last_name = $lastName;
+        $astroman->first_name = trim($firstName);
+        $astroman->last_name = trim($lastName);
         $astroman->DOB = $dob;
         $astroman->save();
         
@@ -75,6 +80,20 @@ class AstromenList
             $this->skillModel->removeSkillsFromAstroman($id);
             $this->skillModel->addSkillsToAstroman($id, $skillsProcessed['selectedSkillsId'], $skillsProcessed['newSkillsName']);
         }
+    }
+    
+    public function addNewAstroman(string $firstName, string $lastName, string $dob, array $skills)
+    {
+        $astroman = new Astroman();
+        
+        $astroman->first_name = trim($firstName);
+        $astroman->last_name = trim($lastName);
+        $astroman->DOB = $dob;
+        $astroman->save();
+        
+        $id = $astroman->id;
+        $skillsProcessed = $this->skillModel->processFormArray($skills);
+        $this->skillModel->addSkillsToAstroman($id, $skillsProcessed['selectedSkillsId'], $skillsProcessed['newSkillsName']);
     }
     
     protected function markSkillsSourceAsDatabase(array $skills): array

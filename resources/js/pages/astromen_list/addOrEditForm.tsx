@@ -8,7 +8,13 @@ export default class AddOrEditForm extends React.Component
     constructor(props) {
         super(props);
         this.state = {
-            data: null
+            data: {
+                first_name: '', 
+                last_name: '', 
+                DOB: '', 
+                skills: []
+            }, 
+            show: false
         };
 
         if (props.action !== 'edit' && props.action !== 'new') {
@@ -19,7 +25,7 @@ export default class AddOrEditForm extends React.Component
     render()
     {
 
-        if (this.state.data === null) {
+        if (!this.state.show) {
             return (
                 <>
                 </>
@@ -28,7 +34,7 @@ export default class AddOrEditForm extends React.Component
 
         var action = '/' + this.props.action;
         var id = this.props.action === 'edit' ? this.state.data.id : 0;
-        var formTitle = this.props.action === 'edit' ? 'Editace astronauta' : 'Nový astronaut';
+        var formTitle = this.props.action === 'edit' ? `Editace astronauta ${this.state.data.first_name} ${this.state.data.last_name}` : 'Nový astronaut';
 
         return (
             <>
@@ -37,7 +43,7 @@ export default class AddOrEditForm extends React.Component
                 <form action={action} onSubmit={(event) => {this.validateForm(event)}} method="POST">
                     <input type="hidden" name="_token" value={this.props.csrf} />
                     <input type="hidden" name="id" value={id} />
-					<input type="hidden" name="action" value={this.props.action} />
+                    <input type="hidden" name="action" value={this.props.action} />
                     <table>
                         <tbody>
                             <TabledInput label="Jméno" type="text" name="first_name" inputValue={this.state.data.first_name} />
@@ -62,9 +68,20 @@ export default class AddOrEditForm extends React.Component
     {
         var toto = this;
         document.addEventListener('astromanFormEditSetData', function(event) {
-            var removeAstromanExtraSkillsEvent = new CustomEvent('removeAstromanExtraSkills');
-            document.dispatchEvent(removeAstromanExtraSkillsEvent);
-            toto.setState({data: event.detail.data});
+            if (toto.props.action === 'edit') {
+                var removeAstromanExtraSkillsEvent = new CustomEvent('removeAstromanExtraSkills');
+                document.dispatchEvent(removeAstromanExtraSkillsEvent);
+                toto.setState({data: event.detail.data, show: true});
+            } else if (toto.props.action === 'new') {
+                toto.setState({show: false});
+            }
+        });
+        document.addEventListener('showNewAstromanForm', function(event) {
+            if (toto.props.action === 'new') {
+                toto.setState({show: true});
+            } else if (toto.props.action === 'edit') {
+                toto.setState({show: false});
+            }
         });
     }
     

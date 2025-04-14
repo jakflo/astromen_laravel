@@ -49,4 +49,12 @@ class AstromenList extends Controller
         return redirect('/');
     }
     
+    public function newFormSent(ValidateAddOrEditForm $validator)
+    {
+        $data = $validator->validated();
+        $this->model->addNewAstroman($data['first_name'], $data['last_name'], $data['DOB'], $data['skill']);
+        $validator->session()->flash('status', "Astronaut {$data['first_name']} {$data['last_name']} vytvořen.");
+        return redirect('/');
+    }
+    
 }
