@@ -5,9 +5,6 @@ export default class AstromenList extends React.Component
     constructor(props) 
     {
         super(props);
-//            this.state = {
-//                
-//            };
     }
     
     render()
@@ -62,7 +59,7 @@ class AstromenListRow extends React.Component
                     <td>{this.props.rowData.skill_names.join(', ')}</td>
                     <td>
                     <button type="button" data-id={this.props.rowNumber} onClick={() => {this.astromanEdited();}}>Editovat</button>
-                    <button type="button">Smazat</button>
+                    <button type="button" data-id={this.props.rowNumber} onClick={() => {this.astromanDeleted();}}>Smazat</button>
                     </td>
                 </tr>
             </>
@@ -82,6 +79,16 @@ class AstromenListRow extends React.Component
         this.unmarkRows();
         this.setState({marked: true});
         var formEvent = new CustomEvent('astromanFormEditSetData', {detail:{data: this.props.rowData}});
+        document.dispatchEvent(formEvent);
+    }
+    
+    astromanDeleted()
+    {
+        this.unmarkRows();
+        this.setState({marked: true});
+        var hideNewAstromanAndEditFormEvent = new CustomEvent('hideNewAstromanAndEditForm');
+        document.dispatchEvent(hideNewAstromanAndEditFormEvent);
+        var formEvent = new CustomEvent('astromanFormDeleteSetData', {detail:{data: this.props.rowData}});
         document.dispatchEvent(formEvent);
     }
     

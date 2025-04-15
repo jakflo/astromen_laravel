@@ -83,6 +83,9 @@ export default class AddOrEditForm extends React.Component
                 toto.setState({show: false});
             }
         });
+        document.addEventListener('hideNewAstromanAndEditForm', function(event) {            
+            toto.setState({show: false});
+        });
     }
     
     validateForm(e)

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Head } from '@inertiajs/react';
 import AstromenList from './astromenList';
 import AddOrEditForm from './addOrEditForm';
+import DeleteForm from './deleteForm';
 import FlashMessages from './flashMessages';
 import '../../../css/astromen.css';
 
@@ -24,6 +25,7 @@ export default class Main extends React.Component
                 <button type="button" onClick={() => {this.showNewAstromanForm();}}>Nový astronaut</button>
                 <AddOrEditForm csrf={this.props.csrf} aviableSkills={this.props.aviableSkills} action="edit" />
                 <AddOrEditForm csrf={this.props.csrf} aviableSkills={this.props.aviableSkills} action="new" />
+                <DeleteForm csrf={this.props.csrf} />
             </>
         );
     }

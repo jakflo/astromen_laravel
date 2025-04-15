@@ -16,15 +16,6 @@ class AstromenList
     public function getList()
     {
         return Astroman::all();
-        
-//        return DB::query()
-//                ->selectRaw("astroman.*, GROUP_CONCAT(skill.name SEPARATOR ', ') AS skill_names, GROUP_CONCAT(skill.id SEPARATOR ', ') AS skill_ids")
-//                ->from('astroman')
-//                ->join('astroman_has_skill', 'astroman.id', '=', 'astroman_has_skill.astroman_id')
-//                ->join('skill', 'skill.id', '=', 'astroman_has_skill.skill_id')
-//                ->groupBy('astroman.id')
-//                ->get()
-//                ;
     }
     
     public function getAstroman(int $id): Astroman|null
@@ -94,6 +85,17 @@ class AstromenList
         $id = $astroman->id;
         $skillsProcessed = $this->skillModel->processFormArray($skills);
         $this->skillModel->addSkillsToAstroman($id, $skillsProcessed['selectedSkillsId'], $skillsProcessed['newSkillsName']);
+    }
+    
+    public function deleteAstroman(int $id)
+    {
+        $astroman = $this->getAstroman($id);
+        if ($astroman === null) {
+            throw new \Exception('Astroman not found');
+        }
+        
+        $this->skillModel->removeSkillsFromAstroman($id);
+        $astroman->delete();
     }
     
     protected function markSkillsSourceAsDatabase(array $skills): array

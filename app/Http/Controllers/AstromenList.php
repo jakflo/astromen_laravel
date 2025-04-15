@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Requests\ValidateAddOrEditForm;
+use App\Http\Requests\ValidateDeleteForm;
 
 class AstromenList extends Controller
 {
     public function __construct(
         protected \App\Models\AstromenList $model, 
         protected \App\Models\Skill $skillModel
-
     )
     {
         
@@ -54,6 +54,15 @@ class AstromenList extends Controller
         $data = $validator->validated();
         $this->model->addNewAstroman($data['first_name'], $data['last_name'], $data['DOB'], $data['skill']);
         $validator->session()->flash('status', "Astronaut {$data['first_name']} {$data['last_name']} vytvořen.");
+        return redirect('/');
+    }
+    
+    public function deleteFormSent(ValidateDeleteForm $validator)
+    {
+        $data = $validator->validated();
+        $oldAstromanData = $this->model->getAstroman((int)$data['id']);
+        $this->model->deleteAstroman((int)$data['id']);
+        $validator->session()->flash('status', "Astronaut {$oldAstromanData->first_name} {$oldAstromanData->last_name} vymazán.");
         return redirect('/');
     }
     

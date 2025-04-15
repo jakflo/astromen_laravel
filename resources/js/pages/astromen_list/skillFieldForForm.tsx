@@ -90,8 +90,6 @@ export default class SkillFieldForForm extends React.Component
     removeNewAddedSkill(keyName)
     {
         var extraItems = this.state.extraItems;
-//		console.log(extraItems);
-//		console.log(extraItems[0].key);
         
         var k;
         var keyFound = false;
