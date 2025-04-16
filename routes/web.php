@@ -5,9 +5,9 @@ use Inertia\Inertia;
 use App\Http\Controllers\AstromenList;
 
 Route::get('/', [AstromenList::class, 'render'])->name('home');
-Route::post('/edit', [AstromenList::class, 'editFormSent'])->name('edit');
+Route::put('/edit', [AstromenList::class, 'editFormSent'])->name('edit');
 Route::post('/new', [AstromenList::class, 'newFormSent'])->name('new');
-Route::post('/delete', [AstromenList::class, 'deleteFormSent'])->name('delete');
+Route::delete('/delete', [AstromenList::class, 'deleteFormSent'])->name('delete');
 Route::get('/astroman_exists', [AstromenList::class, 'astromanExists'])->name('astroman_exists');
 
 Route::middleware(['auth', 'verified'])->group(function () {

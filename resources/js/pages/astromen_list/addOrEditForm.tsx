@@ -35,6 +35,12 @@ export default class AddOrEditForm extends React.Component
         var action = '/' + this.props.action;
         var id = this.props.action === 'edit' ? this.state.data.id : 0;
         var formTitle = this.props.action === 'edit' ? `Editace astronauta ${this.state.data.first_name} ${this.state.data.last_name}` : 'Nový astronaut';
+        
+        if (this.props.action === 'edit') {
+            var formMethod = <input type="hidden" name="_method" value="PUT" />;
+        } else {
+            var formMethod = '';
+        }
 
         return (
             <>
@@ -42,6 +48,7 @@ export default class AddOrEditForm extends React.Component
                 <FormErrors disableEvent={false} action={this.props.action} errors={[]} />
                 <form action={action} onSubmit={(event) => {this.validateForm(event)}} method="POST">
                     <input type="hidden" name="_token" value={this.props.csrf} />
+                    {formMethod}
                     <input type="hidden" name="id" value={id} />
                     <input type="hidden" name="action" value={this.props.action} />
                     <table>
