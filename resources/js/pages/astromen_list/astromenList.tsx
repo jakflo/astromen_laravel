@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Paginator from './paginator';
 
 export default class AstromenList extends React.Component
 {
@@ -32,6 +33,7 @@ export default class AstromenList extends React.Component
                         {rows}
                     </tbody>
                 </table>
+                <Paginator links={this.props.paginator.links} />
             </>
         );
     }
@@ -44,15 +46,24 @@ class AstromenListRow extends React.Component
     {
         super(props);
         this.state = {
-            marked: false
+            markedForEdit: false, 
+            markedForDelete: false
         };
     }
     
     render()
     {
+        if (this.state.markedForEdit) {
+            var markedClassName = 'marked_edit';
+        } else if (this.state.markedForDelete) {
+            var markedClassName = 'marked_delete';
+        } else {
+            var markedClassName = '';
+        }
+        
         return (
             <>
-                <tr className={this.state.marked ? 'marked' : ''}>
+                <tr className={markedClassName}>
                     <td>{this.props.rowData.first_name}</td>
                     <td>{this.props.rowData.last_name}</td>
                     <td>{this.props.rowData.dobCz}</td>
@@ -70,14 +81,17 @@ class AstromenListRow extends React.Component
     {
         var toto = this;
         document.addEventListener('unmarkRow', function(event) {
-            toto.setState({marked: false});
+            toto.setState({
+                markedForEdit: false, 
+                markedForDelete: false
+            });
         });
     }
     
     astromanEdited()
     {
         this.unmarkRows();
-        this.setState({marked: true});
+        this.setState({markedForEdit: true});
         var formEvent = new CustomEvent('astromanFormEditSetData', {detail:{data: this.props.rowData}});
         document.dispatchEvent(formEvent);
     }
@@ -85,7 +99,7 @@ class AstromenListRow extends React.Component
     astromanDeleted()
     {
         this.unmarkRows();
-        this.setState({marked: true});
+        this.setState({markedForDelete: true});
         var hideNewAstromanAndEditFormEvent = new CustomEvent('hideNewAstromanAndEditForm');
         document.dispatchEvent(hideNewAstromanAndEditFormEvent);
         var formEvent = new CustomEvent('astromanFormDeleteSetData', {detail:{data: this.props.rowData}});
@@ -94,8 +108,8 @@ class AstromenListRow extends React.Component
     
     unmarkRows()
     {
-        var setFormErrorsEvent = new CustomEvent('unmarkRow');
-        document.dispatchEvent(setFormErrorsEvent);
+        var unmarkRowEvent = new CustomEvent('unmarkRow');
+        document.dispatchEvent(unmarkRowEvent);
     }
     
 }

@@ -13,9 +13,14 @@ class AstromenList
         
     }
     
-    public function getList()
+    public function getList(int $itemsPerPage)
     {
-        return Astroman::all();
+        return Astroman::paginate($itemsPerPage)->onEachSide(1);
+    }
+    
+    public function getCount(): int
+    {
+        return Astroman::all()->count();
     }
     
     public function getAstroman(int $id): Astroman|null

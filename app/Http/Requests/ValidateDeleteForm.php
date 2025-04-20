@@ -13,7 +13,8 @@ class ValidateDeleteForm extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'bail|required|integer|exists:astroman,id'
+            'id' => 'bail|required|integer|exists:astroman,id', 
+            'page' => 'nullable|integer'
         ];
     }
     

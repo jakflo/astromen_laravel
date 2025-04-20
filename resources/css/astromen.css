@@ -13,9 +13,6 @@ table.normTab th {
 table.normTab tr:hover {
     background-color: #cccccc;
 }
-table.normTab tr.marked {
-    background-color: #00cc44;
-}
 
 .hidden {
     display: none;
@@ -32,10 +29,10 @@ table.normTab tr.marked {
 }
 
 tr.marked_edit {
-    background-color: #ffff00;    
+    background-color: #00cc44;    
 }
 tr.marked_delete {
-    background-color: #ff4d4d;    
+    background-color: #f26333;    
 }
 
 ul.flash {
@@ -53,4 +50,18 @@ ul.no-bullets {
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+
+div.paginator {
+    margin: 15px 2px;
+}
+div.paginator a, div.paginator span {
+    padding: 5px;
+    font-size: 28px;
+}
+div.paginator span.current_page {
+    background-color: greenyellow;
+}
+.grey {
+    color: grey;
 }

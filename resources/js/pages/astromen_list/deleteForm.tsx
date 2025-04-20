@@ -32,6 +32,7 @@ export default class DeleteForm extends React.Component
                     <input type="hidden" name="_method" value="DELETE" />
                     <input type="hidden" name="_token" value={this.props.csrf} />
                     <input type="hidden" name="id" value={this.state.data.id} />
+                    <input type="hidden" name="page" value={this.props.currentPage} />
                     <input type="hidden" name="action" value='delete' />
                     <input type="submit" name="sent" value="Ano" />
                     <button type="button" onClick={() => {this.cancel();}}>Ne</button>

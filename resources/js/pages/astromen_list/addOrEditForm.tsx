@@ -50,6 +50,7 @@ export default class AddOrEditForm extends React.Component
                     <input type="hidden" name="_token" value={this.props.csrf} />
                     {formMethod}
                     <input type="hidden" name="id" value={id} />
+                    <input type="hidden" name="page" value={this.props.currentPage} />
                     <input type="hidden" name="action" value={this.props.action} />
                     <table>
                         <tbody>

@@ -22,6 +22,7 @@ class ValidateAddOrEditForm extends FormRequest
     {
         return [
             'id' => 'bail|required|integer', 
+            'page' => 'nullable|integer', 
             'first_name' => 'bail|required|string|max:32', 
             'last_name' => 'bail|required|string|max:32', 
             'DOB' => 'bail|required|date', 
