@@ -1,20 +1,31 @@
 import React, { Component } from 'react';
+import {astromenRow} from './types';
 
+type deleteFormPropsType = {
+     currentPage: number|null,
+     csrf: string
+};
+
+/**
+ * events:
+ *    astromanFormDeleteSetData: detail = {data: astromenRow}
+ *    hideDeleteAstromanForm
+ */
 export default class DeleteForm extends React.Component
 {
-    constructor(props) 
+    constructor(props: deleteFormPropsType)
     {
         super(props);
             this.state = {
-                show: false, 
+                show: false,
                 data: {
-                    first_name: '', 
-                    last_name: '', 
+                    first_name: '',
+                    last_name: '',
                     id: 0
                 }
             };
     }
-    
+
     render()
     {
         if (!this.state.show) {
@@ -23,7 +34,7 @@ export default class DeleteForm extends React.Component
                 </>
             );
         }
-        
+
         var deleteAstromanTitle = `Skutečně si přejete vymazat astronauta ${this.state.data.first_name} ${this.state.data.last_name}?`;
         return (
             <>
@@ -40,20 +51,23 @@ export default class DeleteForm extends React.Component
             </>
         );
     }
-    
+
     componentDidMount()
     {
         var toto = this;
         document.addEventListener('astromanFormDeleteSetData', function(event) {
             toto.setState({data: event.detail.data, show: true});
         });
+        document.addEventListener('hideDeleteAstromanForm', function(event) {
+            toto.setState({show: false});
+        });
     }
-    
+
     cancel()
     {
-        var setFormErrorsEvent = new CustomEvent('unmarkRow');
-        document.dispatchEvent(setFormErrorsEvent);
+        var unmarkRowEvent = new CustomEvent('unmarkRow');
+        document.dispatchEvent(unmarkRowEvent);
         this.setState({show: false});
     }
-    
+
 }

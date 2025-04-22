@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import {paginatorLinks} from './types';
+
+type paginatorPropsType = {
+    links: paginatorLinks
+};
 
 export default class Paginator extends React.Component
 {
-    constructor(props) {
+    constructor(props: paginatorPropsType) {
         super(props);
     }
 
@@ -28,12 +33,12 @@ export default class Paginator extends React.Component
             }
 			linkKey++;
         });
-        
+
         return (
             <div className="paginator">
                 {links}
             </div>
         );
     }
-    
+
 }

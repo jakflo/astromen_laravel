@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
+import {simpleDial} from './types';
 
+type skillFieldForFormPropsType = {
+     aviableSkills: simpleDial,
+     data: simpleDial
+};
+
+/**
+ * events:
+ *    astromanFormRemoveSkill: detail = {id: number}
+ *    removeAstromanExtraSkills
+ */
 export default class SkillFieldForForm extends React.Component
 {
-    constructor(props) {
+    constructor(props: skillFieldForFormPropsType) {
         super(props);
         this.state = {
             extraItems: []
@@ -23,11 +34,11 @@ export default class SkillFieldForForm extends React.Component
                         <button type="button" onClick={() => {this.selectNewSkill()}}>Přidat dovednost</button>
                         <button type="button" onClick={() => {this.createAndAddNewSkill();}}>Vytvořit a přidat novou dovednost</button>
                     </td>
-                </tr>            
+                </tr>
             </>
         );
     }
-    
+
     componentDidMount()
     {
         var toto = this;
@@ -38,7 +49,7 @@ export default class SkillFieldForForm extends React.Component
             toto.setState({extraItems: []});
         });
     }
-    
+
     loadItems()
     {
         var items = [];
@@ -47,16 +58,16 @@ export default class SkillFieldForForm extends React.Component
             let skillItem = this.props.data[k];
             items.push(<SkillCheckbox key={skillItem.id} skillItem={skillItem} />);
         }
-        
+
         return items.concat(this.state.extraItems);
     }
-    
+
     isPropsChanged()
     {
         if (this.props.data.length !== this.state.items.length) {
             return true;
         }
-        
+
         var k;
         for (k in this.props.data) {
             let propItem = this.props.data[k];
@@ -65,10 +76,10 @@ export default class SkillFieldForForm extends React.Component
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     createAndAddNewSkill()
     {
         var extraItems = this.state.extraItems;
@@ -77,7 +88,7 @@ export default class SkillFieldForForm extends React.Component
         this.setState({extraItems: extraItems});
         this.newItemCounter++;
     }
-    
+
     selectNewSkill()
     {
         var extraItems = this.state.extraItems;
@@ -86,11 +97,11 @@ export default class SkillFieldForForm extends React.Component
         this.setState({extraItems: extraItems});
         this.newItemCounter++;
     }
-    
+
     removeNewAddedSkill(keyName)
     {
         var extraItems = this.state.extraItems;
-        
+
         var k;
         var keyFound = false;
         for (k in extraItems) {
@@ -99,7 +110,7 @@ export default class SkillFieldForForm extends React.Component
                 break;
             }
         }
-        
+
         if (!keyFound) {
             throw new Error('keyname not found');
         } else {
@@ -107,18 +118,25 @@ export default class SkillFieldForForm extends React.Component
             this.setState({extraItems: extraItems});
         }
     }
-    
+
 }
+
+type skillCheckboxPropsType = {
+     skillItem: {
+         id: number,
+         name: string
+     }
+};
 
 class SkillCheckbox extends React.Component
 {
-    constructor(props) {
+    constructor(props: skillCheckboxPropsType) {
         super(props);
         this.state = {
             data: this.props.skillItem
         };
     }
-    
+
     render()
     {
         var skillLabelId = 'skill_item_' + this.state.data.id;
@@ -132,74 +150,85 @@ class SkillCheckbox extends React.Component
             </>
         );
     }
-    
+
     noop()
     {
-        
+
     }
-    
+
 }
+
+type skillInputPropsType = {
+     idKey: number,
+     keyName: string
+};
 
 class SkillInput extends React.Component
 {
-    constructor(props) {
+    constructor(props: skillInputPropsType) {
         super(props);
     }
-    
+
     render()
     {
         var idName = "new_id" + this.props.idKey;
         var formName = "skill[" + idName + "]";
-        
+
         return (
             <>
                 <li>
                     <input type="text" name={formName} />
-                    <button type="button" data-id={this.props.idKey} onClick={() => {this.removeMyself(this);}}>Zrušit</button>
+                    <button type="button" data-id={this.props.idKey} onClick={() => {this.removeMyself();}}>Zrušit</button>
                 </li>
             </>
         );
     }
-    
-    removeMyself(toto)
+
+    removeMyself()
     {
-        var skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: toto.props.keyName}});
+        var skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: this.props.keyName}});
         document.dispatchEvent(skillEvent);
     }
-    
+
 }
+
+type skillSelectPropsType = {
+    idKey: number,
+    keyName: string,
+    aviableSkills: simpleDial
+};
 
 class SkillSelect extends React.Component
 {
-    constructor(props) {
+    constructor(props: skillSelectPropsType) {
         super(props);
     }
-    
+
     render()
     {
         var idName = "selected_id" + this.props.idKey;
         var formName = "skill[" + idName + "]";
-        
+
         var selectOptions = [<option key="sso0" value="0">---Vybetre dovednost---</option>];
         this.props.aviableSkills.forEach((skillItem) => {
             let keyName = "sso" + skillItem.id;
             selectOptions.push(<option key={keyName} value={skillItem.id}>{skillItem.name}</option>);
         });
-        
+
         return (
             <>
                 <li>
                     <select name={formName}>{selectOptions}</select>
-                    <button type="button" data-id={this.props.idKey} onClick={() => {this.removeMyself(this);}}>Zrušit</button>
+                    <button type="button" data-id={this.props.idKey} onClick={() => {this.removeMyself();}}>Zrušit</button>
                 </li>
             </>
         );
     }
-    
-    removeMyself(toto)
+
+    removeMyself()
     {
-        var skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: toto.props.keyName}});
+        var skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: this.props.keyName}});
         document.dispatchEvent(skillEvent);
     }
-    
+
 }

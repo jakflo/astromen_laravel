@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import FormErrors from './formErrors';
 
+type propsType = {
+     message: string|null,
+     oldFormValues: object|null, //object z session()->all()['_old_input']
+     backendValidatorErrors: object|null //chyby formularu, automaticky vlozeno backendem
+};
+
 export default class FlashMessages extends React.Component
 {
-    constructor(props) {
+    constructor(props: propsType) {
         super(props);
     }
 
@@ -18,7 +24,7 @@ export default class FlashMessages extends React.Component
             return null;
         }
     }
-    
+
     printStatusMessage()
     {
         return (
@@ -27,7 +33,7 @@ export default class FlashMessages extends React.Component
             </div>
         );
     }
-    
+
     printErrorMessages()
     {
         var errors = this.getMassagesFromBackendValidatorErrors(this.props.backendValidatorErrors);
@@ -48,7 +54,7 @@ export default class FlashMessages extends React.Component
             </div>
         );
     }
-    
+
     getMassagesFromBackendValidatorErrors(errors)
     {
         var massages = [];
@@ -56,8 +62,8 @@ export default class FlashMessages extends React.Component
         for (k in errors) {
             massages.push(errors[k]);
         }
-        
+
         return massages;
     }
-    
+
 }

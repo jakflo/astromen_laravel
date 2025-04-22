@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 
+type formErrorPropsType = {
+    disableEvent: boolean,
+    errors: Array<strings>
+};
+
+/**
+ * events:
+ *    setFormErrors: detail = {errors: Array<string>, action: 'edit'|'new'}
+ */
 export default class FormErrors extends React.Component
 {
-    constructor(props) {
+    constructor(props: formErrorPropsType) {
         super(props);
         this.state = {
             errors: props.errors
@@ -23,7 +32,7 @@ export default class FormErrors extends React.Component
                 let errorKey = 'form_error_' + this.props.action + '_' + k;
                 errorsList.push(<li key={errorKey}>{this.state.errors[k]}</li>);
             }
-            
+
             return (
                 <div id="form_errors">
                     <ul className="form_errors">
@@ -33,7 +42,7 @@ export default class FormErrors extends React.Component
             );
         }
     }
-    
+
     componentDidMount()
     {
         var toto = this;
@@ -45,5 +54,5 @@ export default class FormErrors extends React.Component
             });
         }
     }
-    
+
 }

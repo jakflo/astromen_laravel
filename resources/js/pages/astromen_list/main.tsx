@@ -5,10 +5,21 @@ import AddOrEditForm from './addOrEditForm';
 import DeleteForm from './deleteForm';
 import FlashMessages from './flashMessages';
 import '../../../css/astromen.css';
+import {astromen, simpleDial} from './types';
 
-export default class Main extends React.Component 
+type propsType = {
+     astromen: astromen|null,
+     aviableSkills: simpleDial,
+     csrf: string,
+     oldFormValues: object|null, //object z session()->all()['_old_input']
+     flashStatus: string|null,
+     paginator: object, //object z Illuminate\Pagination\LengthAwarePaginator
+     errors: object|null //chyby formularu, automaticky vlozeno backendem
+};
+
+export default class Main extends React.Component
 {
-    constructor(props) {
+    constructor(props: propsType) {
         super(props);
     }
 
@@ -16,8 +27,8 @@ export default class Main extends React.Component
     {
         var oldFormValues = this.props.oldFormValues ?? null;
         return (
-            <>				
-                <Head title="Astronauti" />					
+            <>
+                <Head title="Astronauti" />
                 <h1>Astronauti</h1>
                 <FlashMessages oldFormValues={oldFormValues} message={this.props.flashStatus} backendValidatorErrors={this.props.errors} disableEvent={true} />
                 <AstromenList list={this.props.astromen} paginator={this.props.paginator} />
@@ -28,13 +39,15 @@ export default class Main extends React.Component
             </>
         );
     }
-    
+
     showNewAstromanForm()
     {
         var showNewAstromanFormEvent = new CustomEvent('showNewAstromanForm');
         document.dispatchEvent(showNewAstromanFormEvent);
-        var setFormErrorsEvent = new CustomEvent('unmarkRow');
-        document.dispatchEvent(setFormErrorsEvent);
+        var unmarkRowEvent = new CustomEvent('unmarkRow');
+        document.dispatchEvent(unmarkRowEvent);
+        var hideDeleteAstromanFormEvent = new CustomEvent('hideDeleteAstromanForm');
+        document.dispatchEvent(hideDeleteAstromanFormEvent);
     }
 
 }

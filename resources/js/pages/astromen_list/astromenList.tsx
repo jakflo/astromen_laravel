@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import Paginator from './paginator';
+import {astromen, astromenRow} from './types';
+
+type astromenListPropsType = {
+    list: astromen,
+    paginator: object //z Illuminate\Pagination\LengthAwarePaginator
+};
 
 export default class AstromenList extends React.Component
 {
-    constructor(props) 
+    constructor(props: astromenListPropsType)
     {
         super(props);
     }
-    
+
     render()
     {
         var rows = [];
@@ -15,9 +21,9 @@ export default class AstromenList extends React.Component
         for (k in this.props.list) {
             let row = this.props.list[k];
             rows.push(<AstromenListRow key={k} rowNumber={k} rowData={row} />);
-        }        
-        
-        return (		
+        }
+
+        return (
             <>
                 <table id="atromen_table" className="normTab">
                     <thead>
@@ -37,20 +43,29 @@ export default class AstromenList extends React.Component
             </>
         );
     }
-    
+
 }
 
+type astromenListRowPropsType = {
+    rowNumber: number
+    rowData: astromenRow
+};
+
+/**
+ * events:
+ *    unmarkRow
+ */
 class AstromenListRow extends React.Component
 {
-    constructor(props) 
+    constructor(props: astromenListRowPropsType)
     {
         super(props);
         this.state = {
-            markedForEdit: false, 
+            markedForEdit: false,
             markedForDelete: false
         };
     }
-    
+
     render()
     {
         if (this.state.markedForEdit) {
@@ -60,7 +75,7 @@ class AstromenListRow extends React.Component
         } else {
             var markedClassName = '';
         }
-        
+
         return (
             <>
                 <tr className={markedClassName}>
@@ -76,26 +91,28 @@ class AstromenListRow extends React.Component
             </>
         );
     }
-    
+
     componentDidMount()
     {
         var toto = this;
         document.addEventListener('unmarkRow', function(event) {
             toto.setState({
-                markedForEdit: false, 
+                markedForEdit: false,
                 markedForDelete: false
             });
         });
     }
-    
+
     astromanEdited()
     {
         this.unmarkRows();
         this.setState({markedForEdit: true});
         var formEvent = new CustomEvent('astromanFormEditSetData', {detail:{data: this.props.rowData}});
         document.dispatchEvent(formEvent);
+        var hideDeleteAstromanFormEvent = new CustomEvent('hideDeleteAstromanForm');
+        document.dispatchEvent(hideDeleteAstromanFormEvent);
     }
-    
+
     astromanDeleted()
     {
         this.unmarkRows();
@@ -105,11 +122,11 @@ class AstromenListRow extends React.Component
         var formEvent = new CustomEvent('astromanFormDeleteSetData', {detail:{data: this.props.rowData}});
         document.dispatchEvent(formEvent);
     }
-    
+
     unmarkRows()
     {
         var unmarkRowEvent = new CustomEvent('unmarkRow');
         document.dispatchEvent(unmarkRowEvent);
     }
-    
+
 }

@@ -2,18 +2,32 @@ import React, { Component } from 'react';
 import SkillFieldForForm from './skillFieldForForm';
 import AddOrEditFormValidator from './addOrEditFormValidator';
 import FormErrors from './formErrors';
+import {astromenRow, simpleDial} from './types';
 
+type addOrEditForPropsType = {
+     currentPage: number|null,
+     aviableSkills: simpleDial,
+     csrf: string,
+     action: 'edit'|'new'
+};
+
+/**
+ * events:
+ *    astromanFormEditSetData: detail = {data: astromenRow}
+ *    showNewAstromanForm
+ *    hideNewAstromanAndEditForm
+ */
 export default class AddOrEditForm extends React.Component
 {
-    constructor(props) {
+    constructor(props: addOrEditForPropsType) {
         super(props);
         this.state = {
             data: {
-                first_name: '', 
-                last_name: '', 
-                DOB: '', 
+                first_name: '',
+                last_name: '',
+                DOB: '',
                 skills: []
-            }, 
+            },
             show: false
         };
 
@@ -30,12 +44,12 @@ export default class AddOrEditForm extends React.Component
                 <>
                 </>
             );
-        }         
+        }
 
         var action = '/' + this.props.action;
         var id = this.props.action === 'edit' ? this.state.data.id : 0;
         var formTitle = this.props.action === 'edit' ? `Editace astronauta ${this.state.data.first_name} ${this.state.data.last_name}` : 'Nový astronaut';
-        
+
         if (this.props.action === 'edit') {
             var formMethod = <input type="hidden" name="_method" value="PUT" />;
         } else {
@@ -91,11 +105,11 @@ export default class AddOrEditForm extends React.Component
                 toto.setState({show: false});
             }
         });
-        document.addEventListener('hideNewAstromanAndEditForm', function(event) {            
+        document.addEventListener('hideNewAstromanAndEditForm', function(event) {
             toto.setState({show: false});
         });
     }
-    
+
     validateForm(e)
     {
         var toto = this;
@@ -108,7 +122,7 @@ export default class AddOrEditForm extends React.Component
                 } else {
                     var setFormErrorsEvent = new CustomEvent('setFormErrors', {
                             detail: {
-                                action: toto.props.action, 
+                                action: toto.props.action,
                                 errors: validateErrors
                         }
                     });
@@ -117,12 +131,20 @@ export default class AddOrEditForm extends React.Component
             })
         ;
     }
-    
+
 }
 
-class TabledInput extends React.Component 
+type tabledInputPropsType = {
+     inputValue: number|string,
+     label: string,
+     type: string,
+     name: string,
+     extraAttributes: object|null
+};
+
+class TabledInput extends React.Component
 {
-    constructor(props) 
+    constructor(props: tabledInputPropsType)
     {
         super(props);
         this.state = {
@@ -130,7 +152,7 @@ class TabledInput extends React.Component
         };
     }
 
-    componentDidUpdate(prevProps) 
+    componentDidUpdate(prevProps)
     {
         if (prevProps.inputValue !== this.props.inputValue) {
             this.setState({ value: this.props.inputValue });
@@ -142,7 +164,7 @@ class TabledInput extends React.Component
         this.setState({ value: e.target.value });
     };
 
-    render() 
+    render()
     {
         return (
             <tr>
@@ -153,11 +175,11 @@ class TabledInput extends React.Component
                         name={this.props.name}
                         value={this.state.value}
                         onChange={(e) => {this.handleChange(e);}}
-                        {...this.props.extaAttributes}
+                        {...this.props.extraAttributes}
                     />
                 </td>
             </tr>
         );
     }
-    
+
 }
