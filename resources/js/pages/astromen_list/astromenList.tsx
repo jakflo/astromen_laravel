@@ -16,6 +16,14 @@ export default class AstromenList extends React.Component
 
     render()
     {
+        if (this.props.list.length === 0) {
+            return (
+                <div id="status_message">
+                    <p>Žádný astronaut zatím nevzniknul.</p>
+                </div>
+            );
+        }
+
         var rows = [];
         var k;
         for (k in this.props.list) {
