@@ -50,10 +50,9 @@ export default class AddOrEditForm extends React.Component
         const id = this.props.action === 'edit' ? this.state.data.id : 0;
         const formTitle = this.props.action === 'edit' ? `Editace astronauta ${this.state.data.first_name} ${this.state.data.last_name}` : 'Nový astronaut';
 
+        let formMethod = '';
         if (this.props.action === 'edit') {
-            var formMethod = <input type="hidden" name="_method" value="PUT" />;
-        } else {
-            var formMethod = '';
+            formMethod = <input type="hidden" name="_method" value="PUT" />;
         }
 
         return (

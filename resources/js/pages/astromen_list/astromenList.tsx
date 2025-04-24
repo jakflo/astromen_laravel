@@ -76,12 +76,11 @@ class AstromenListRow extends React.Component
 
     render()
     {
+        let markedClassName = '';
         if (this.state.markedForEdit) {
-            var markedClassName = 'marked_edit';
+            markedClassName = 'marked_edit';
         } else if (this.state.markedForDelete) {
-            var markedClassName = 'marked_delete';
-        } else {
-            var markedClassName = '';
+            markedClassName = 'marked_delete';
         }
 
         return (

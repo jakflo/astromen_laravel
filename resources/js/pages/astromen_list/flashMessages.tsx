@@ -37,15 +37,19 @@ export default class FlashMessages extends React.Component
     printErrorMessages()
     {
         const errors = this.getMassagesFromBackendValidatorErrors(this.props.backendValidatorErrors);
+        let errorTitle = '';
         switch (this.props.oldFormValues.action) {
             case 'edit':
-                var errorTitle = `Editace astronauta ${this.props.oldFormValues.first_name} ${this.props.oldFormValues.last_name} se nepovedla`;
+                errorTitle = `Editace astronauta ${this.props.oldFormValues.first_name} ${this.props.oldFormValues.last_name} se nepovedla`;
                 break;
             case 'new':
-                var errorTitle = 'Tvorba nového astronauta se nepovedla';
+                errorTitle = 'Tvorba nového astronauta se nepovedla';
+                break;
+            case 'delete':
+                errorTitle = 'Smazání astronauta se nepovedlo';
                 break;
             default:
-                var errorTitle = 'Něco se nepovedlo';
+                errorTitle = 'Něco se nepovedlo';
         }
         return (
             <div id="errorMessages">
