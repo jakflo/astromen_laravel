@@ -13,11 +13,11 @@ export default class Paginator extends React.Component
 
     render()
     {
-        var links = [];
-		var linkKey = 1;
+        const links = [];
+		let linkKey = 1;
         this.props.links.forEach((linkRaw) => {
-            let label = linkRaw.label.replace('&laquo;', '<').replace('&raquo;', '>');
-			let classNames = [];
+            const label = linkRaw.label.replace('&laquo;', '<').replace('&raquo;', '>');
+			const classNames = [];
 			if (linkRaw.active) {
 				classNames.push('current_page');
 			}
@@ -25,7 +25,7 @@ export default class Paginator extends React.Component
 				classNames.push('grey');
 			}
 
-			let linkKeyName = 'pagLink' + linkKey;
+			const linkKeyName = 'pagLink' + linkKey;
             if (linkRaw.url === null || linkRaw.active) {
                 links.push(<span key={linkKeyName} className={classNames.join(' ')}>{label}</span>);
             } else {

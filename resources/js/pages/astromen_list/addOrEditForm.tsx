@@ -46,9 +46,9 @@ export default class AddOrEditForm extends React.Component
             );
         }
 
-        var action = '/' + this.props.action;
-        var id = this.props.action === 'edit' ? this.state.data.id : 0;
-        var formTitle = this.props.action === 'edit' ? `Editace astronauta ${this.state.data.first_name} ${this.state.data.last_name}` : 'Nový astronaut';
+        const action = '/' + this.props.action;
+        const id = this.props.action === 'edit' ? this.state.data.id : 0;
+        const formTitle = this.props.action === 'edit' ? `Editace astronauta ${this.state.data.first_name} ${this.state.data.last_name}` : 'Nový astronaut';
 
         if (this.props.action === 'edit') {
             var formMethod = <input type="hidden" name="_method" value="PUT" />;
@@ -76,7 +76,7 @@ export default class AddOrEditForm extends React.Component
                                 <th></th>
                                 <td className="tabled_buttons">
                                     <input type="submit" name="sent" value="Odeslat" />
-                                    <button type="button">Zrušit</button>
+                                    <button type="button" onClick={() => {this.cancel();}}>Zrušit</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -88,41 +88,46 @@ export default class AddOrEditForm extends React.Component
 
     componentDidMount()
     {
-        var toto = this;
-        document.addEventListener('astromanFormEditSetData', function(event) {
-            if (toto.props.action === 'edit') {
-                var removeAstromanExtraSkillsEvent = new CustomEvent('removeAstromanExtraSkills');
+        document.addEventListener('astromanFormEditSetData', (event) => {
+            if (this.props.action === 'edit') {
+                const removeAstromanExtraSkillsEvent = new CustomEvent('removeAstromanExtraSkills');
                 document.dispatchEvent(removeAstromanExtraSkillsEvent);
-                toto.setState({data: event.detail.data, show: true});
-            } else if (toto.props.action === 'new') {
-                toto.setState({show: false});
+                this.setState({data: event.detail.data, show: true});
+            } else if (this.props.action === 'new') {
+                this.setState({show: false});
             }
         });
-        document.addEventListener('showNewAstromanForm', function(event) {
-            if (toto.props.action === 'new') {
-                toto.setState({show: true});
-            } else if (toto.props.action === 'edit') {
-                toto.setState({show: false});
+        document.addEventListener('showNewAstromanForm', () => {
+            if (this.props.action === 'new') {
+                this.setState({show: true});
+            } else if (this.props.action === 'edit') {
+                this.setState({show: false});
             }
         });
-        document.addEventListener('hideNewAstromanAndEditForm', function(event) {
-            toto.setState({show: false});
+        document.addEventListener('hideNewAstromanAndEditForm', () => {
+            this.setState({show: false});
         });
+    }
+
+    cancel()
+    {
+        this.setState({show: false});
+        const unmarkRowEvent = new CustomEvent('unmarkRow');
+        document.dispatchEvent(unmarkRowEvent);
     }
 
     validateForm(e)
     {
-        var toto = this;
         e.preventDefault();
-        var addOrEditFormValidator = new AddOrEditFormValidator();
+        const addOrEditFormValidator = new AddOrEditFormValidator();
         addOrEditFormValidator.validate(event.target)
             .then((validateErrors) => {
                 if (validateErrors.length === 0) {
                     e.target.submit();
                 } else {
-                    var setFormErrorsEvent = new CustomEvent('setFormErrors', {
+                    const setFormErrorsEvent = new CustomEvent('setFormErrors', {
                             detail: {
-                                action: toto.props.action,
+                                action: this.props.action,
                                 errors: validateErrors
                         }
                     });

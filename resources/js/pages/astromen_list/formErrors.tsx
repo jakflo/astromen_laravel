@@ -26,10 +26,10 @@ export default class FormErrors extends React.Component
                 </div>
             );
         } else {
-            var k;
-            var errorsList = [];
+            let k;
+            const errorsList = [];
             for (k in this.state.errors) {
-                let errorKey = 'form_error_' + this.props.action + '_' + k;
+                const errorKey = 'form_error_' + this.props.action + '_' + k;
                 errorsList.push(<li key={errorKey}>{this.state.errors[k]}</li>);
             }
 
@@ -45,11 +45,10 @@ export default class FormErrors extends React.Component
 
     componentDidMount()
     {
-        var toto = this;
         if (!this.props.disableEvent) {
-            document.addEventListener('setFormErrors', function(event) {
-                if (event.detail.action === toto.props.action) {
-                    toto.setState({errors: event.detail.errors});
+            document.addEventListener('setFormErrors', (event) => {
+                if (event.detail.action === this.props.action) {
+                    this.setState({errors: event.detail.errors});
                 }
             });
         }

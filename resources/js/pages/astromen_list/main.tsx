@@ -25,7 +25,7 @@ export default class Main extends React.Component
 
     render()
     {
-        var oldFormValues = this.props.oldFormValues ?? null;
+        const oldFormValues = this.props.oldFormValues ?? null;
         return (
             <>
                 <Head title="Astronauti" />
@@ -42,11 +42,11 @@ export default class Main extends React.Component
 
     showNewAstromanForm()
     {
-        var showNewAstromanFormEvent = new CustomEvent('showNewAstromanForm');
+        const showNewAstromanFormEvent = new CustomEvent('showNewAstromanForm');
         document.dispatchEvent(showNewAstromanFormEvent);
-        var unmarkRowEvent = new CustomEvent('unmarkRow');
+        const unmarkRowEvent = new CustomEvent('unmarkRow');
         document.dispatchEvent(unmarkRowEvent);
-        var hideDeleteAstromanFormEvent = new CustomEvent('hideDeleteAstromanForm');
+        const hideDeleteAstromanFormEvent = new CustomEvent('hideDeleteAstromanForm');
         document.dispatchEvent(hideDeleteAstromanFormEvent);
     }
 

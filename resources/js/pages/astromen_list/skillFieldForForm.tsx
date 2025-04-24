@@ -41,21 +41,20 @@ export default class SkillFieldForForm extends React.Component
 
     componentDidMount()
     {
-        var toto = this;
-        document.addEventListener('astromanFormRemoveSkill', function(event) {
-            toto.removeNewAddedSkill(event.detail.id);
+        document.addEventListener('astromanFormRemoveSkill', (event) => {
+            this.removeNewAddedSkill(event.detail.id);
         });
-        document.addEventListener('removeAstromanExtraSkills', function(event) {
-            toto.setState({extraItems: []});
+        document.addEventListener('removeAstromanExtraSkills', () => {
+            this.setState({extraItems: []});
         });
     }
 
     loadItems()
     {
-        var items = [];
-        var k;
+        const items = [];
+        let k;
         for (k in this.props.data) {
-            let skillItem = this.props.data[k];
+            const skillItem = this.props.data[k];
             items.push(<SkillCheckbox key={skillItem.id} skillItem={skillItem} />);
         }
 
@@ -68,10 +67,10 @@ export default class SkillFieldForForm extends React.Component
             return true;
         }
 
-        var k;
+        let k;
         for (k in this.props.data) {
-            let propItem = this.props.data[k];
-            let oldPropItem = this.oldProps.data[k];
+            const propItem = this.props.data[k];
+            const oldPropItem = this.oldProps.data[k];
             if (propItem.id !== oldPropItem.id || propItem.name !== oldPropItem.name) {
                 return true;
             }
@@ -82,8 +81,8 @@ export default class SkillFieldForForm extends React.Component
 
     createAndAddNewSkill()
     {
-        var extraItems = this.state.extraItems;
-        var keyName = "nsf" + this.newItemCounter;
+        const extraItems = this.state.extraItems;
+        const keyName = "nsf" + this.newItemCounter;
         extraItems.push(<SkillInput idKey={this.newItemCounter} key={keyName} keyName={keyName} />);
         this.setState({extraItems: extraItems});
         this.newItemCounter++;
@@ -91,8 +90,8 @@ export default class SkillFieldForForm extends React.Component
 
     selectNewSkill()
     {
-        var extraItems = this.state.extraItems;
-        var keyName = "ssf" + this.newItemCounter;
+        const extraItems = this.state.extraItems;
+        const keyName = "ssf" + this.newItemCounter;
         extraItems.push(<SkillSelect idKey={this.newItemCounter} aviableSkills={this.props.aviableSkills} key={keyName} keyName={keyName} />);
         this.setState({extraItems: extraItems});
         this.newItemCounter++;
@@ -100,10 +99,10 @@ export default class SkillFieldForForm extends React.Component
 
     removeNewAddedSkill(keyName)
     {
-        var extraItems = this.state.extraItems;
+        const extraItems = this.state.extraItems;
 
-        var k;
-        var keyFound = false;
+        let k;
+        let keyFound = false;
         for (k in extraItems) {
             if (extraItems[k].key === keyName) {
                 keyFound = true;
@@ -139,8 +138,8 @@ class SkillCheckbox extends React.Component
 
     render()
     {
-        var skillLabelId = 'skill_item_' + this.state.data.id;
-        var formName = "skill[" + this.state.data.id + "]";
+        const skillLabelId = 'skill_item_' + this.state.data.id;
+        const formName = "skill[" + this.state.data.id + "]";
         return (
             <>
                 <li>
@@ -171,8 +170,8 @@ class SkillInput extends React.Component
 
     render()
     {
-        var idName = "new_id" + this.props.idKey;
-        var formName = "skill[" + idName + "]";
+        const idName = "new_id" + this.props.idKey;
+        const formName = "skill[" + idName + "]";
 
         return (
             <>
@@ -186,7 +185,7 @@ class SkillInput extends React.Component
 
     removeMyself()
     {
-        var skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: this.props.keyName}});
+        const skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: this.props.keyName}});
         document.dispatchEvent(skillEvent);
     }
 
@@ -206,12 +205,12 @@ class SkillSelect extends React.Component
 
     render()
     {
-        var idName = "selected_id" + this.props.idKey;
-        var formName = "skill[" + idName + "]";
+        const idName = "selected_id" + this.props.idKey;
+        const formName = "skill[" + idName + "]";
 
-        var selectOptions = [<option key="sso0" value="0">---Vybetre dovednost---</option>];
+        const selectOptions = [<option key="sso0" value="0">---Vybetre dovednost---</option>];
         this.props.aviableSkills.forEach((skillItem) => {
-            let keyName = "sso" + skillItem.id;
+            const keyName = "sso" + skillItem.id;
             selectOptions.push(<option key={keyName} value={skillItem.id}>{skillItem.name}</option>);
         });
 
@@ -227,7 +226,7 @@ class SkillSelect extends React.Component
 
     removeMyself()
     {
-        var skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: this.props.keyName}});
+        const skillEvent = new CustomEvent('astromanFormRemoveSkill', {detail:{id: this.props.keyName}});
         document.dispatchEvent(skillEvent);
     }
 

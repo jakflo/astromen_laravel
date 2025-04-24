@@ -15,7 +15,7 @@ export default class FlashMessages extends React.Component
 
     render()
     {
-	var errors = this.getMassagesFromBackendValidatorErrors(this.props.backendValidatorErrors);
+	const errors = this.getMassagesFromBackendValidatorErrors(this.props.backendValidatorErrors);
         if (this.props.message !== null) {
             return this.printStatusMessage();
         } else if (errors.length > 0) {
@@ -36,7 +36,7 @@ export default class FlashMessages extends React.Component
 
     printErrorMessages()
     {
-        var errors = this.getMassagesFromBackendValidatorErrors(this.props.backendValidatorErrors);
+        const errors = this.getMassagesFromBackendValidatorErrors(this.props.backendValidatorErrors);
         switch (this.props.oldFormValues.action) {
             case 'edit':
                 var errorTitle = `Editace astronauta ${this.props.oldFormValues.first_name} ${this.props.oldFormValues.last_name} se nepovedla`;
@@ -57,8 +57,8 @@ export default class FlashMessages extends React.Component
 
     getMassagesFromBackendValidatorErrors(errors)
     {
-        var massages = [];
-        var k;
+        const massages = [];
+        let k;
         for (k in errors) {
             massages.push(errors[k]);
         }

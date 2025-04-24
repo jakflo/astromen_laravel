@@ -24,10 +24,10 @@ export default class AstromenList extends React.Component
             );
         }
 
-        var rows = [];
-        var k;
+        const rows = [];
+        let k;
         for (k in this.props.list) {
-            let row = this.props.list[k];
+            const row = this.props.list[k];
             rows.push(<AstromenListRow key={k} rowNumber={k} rowData={row} />);
         }
 
@@ -102,9 +102,8 @@ class AstromenListRow extends React.Component
 
     componentDidMount()
     {
-        var toto = this;
-        document.addEventListener('unmarkRow', function(event) {
-            toto.setState({
+        document.addEventListener('unmarkRow', () => {
+            this.setState({
                 markedForEdit: false,
                 markedForDelete: false
             });
@@ -115,9 +114,9 @@ class AstromenListRow extends React.Component
     {
         this.unmarkRows();
         this.setState({markedForEdit: true});
-        var formEvent = new CustomEvent('astromanFormEditSetData', {detail:{data: this.props.rowData}});
+        const formEvent = new CustomEvent('astromanFormEditSetData', {detail:{data: this.props.rowData}});
         document.dispatchEvent(formEvent);
-        var hideDeleteAstromanFormEvent = new CustomEvent('hideDeleteAstromanForm');
+        const hideDeleteAstromanFormEvent = new CustomEvent('hideDeleteAstromanForm');
         document.dispatchEvent(hideDeleteAstromanFormEvent);
     }
 
@@ -125,15 +124,15 @@ class AstromenListRow extends React.Component
     {
         this.unmarkRows();
         this.setState({markedForDelete: true});
-        var hideNewAstromanAndEditFormEvent = new CustomEvent('hideNewAstromanAndEditForm');
+        const hideNewAstromanAndEditFormEvent = new CustomEvent('hideNewAstromanAndEditForm');
         document.dispatchEvent(hideNewAstromanAndEditFormEvent);
-        var formEvent = new CustomEvent('astromanFormDeleteSetData', {detail:{data: this.props.rowData}});
+        const formEvent = new CustomEvent('astromanFormDeleteSetData', {detail:{data: this.props.rowData}});
         document.dispatchEvent(formEvent);
     }
 
     unmarkRows()
     {
-        var unmarkRowEvent = new CustomEvent('unmarkRow');
+        const unmarkRowEvent = new CustomEvent('unmarkRow');
         document.dispatchEvent(unmarkRowEvent);
     }
 

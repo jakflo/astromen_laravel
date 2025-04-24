@@ -11,7 +11,7 @@ export default class AddOrEditFormValidator
                 ._validateNames(formObject.first_name.value, 'Jméno')
                 ._validateNames(formObject.last_name.value, 'Příjmení')
                 ._validateDate(formObject.DOB.value, 'Datum narození');
-        var e = await this._validateAstromanNotUsed(formObject.id.value, formObject.first_name.value, formObject.last_name.value, formObject.DOB.value);
+        await this._validateAstromanNotUsed(formObject.id.value, formObject.first_name.value, formObject.last_name.value, formObject.DOB.value);
         return this._errors;
     }
 
@@ -37,19 +37,19 @@ export default class AddOrEditFormValidator
 
     async _validateAstromanNotUsed(id, firstName, lastName, dob)
     {
-	    var params = new URLSearchParams({
+	    const params = new URLSearchParams({
             id: id,
             first_name: firstName,
             last_name: lastName,
             dob: dob
 	    });
 
-        var responseRaw = await fetch(
+        const responseRaw = await fetch(
             '/astroman_exists?' + params.toString(),
             {method: 'get'}
         );
 
-        var response = await responseRaw.json();
+        const response = await responseRaw.json();
 		if (response.response == 1) {
 		    this._errors.push('Astronaut již existuje');
 		}

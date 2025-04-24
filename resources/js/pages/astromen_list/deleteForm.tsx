@@ -35,7 +35,7 @@ export default class DeleteForm extends React.Component
             );
         }
 
-        var deleteAstromanTitle = `Skutečně si přejete vymazat astronauta ${this.state.data.first_name} ${this.state.data.last_name}?`;
+        const deleteAstromanTitle = `Skutečně si přejete vymazat astronauta ${this.state.data.first_name} ${this.state.data.last_name}?`;
         return (
             <>
                 <h1>{deleteAstromanTitle}</h1>
@@ -54,18 +54,17 @@ export default class DeleteForm extends React.Component
 
     componentDidMount()
     {
-        var toto = this;
-        document.addEventListener('astromanFormDeleteSetData', function(event) {
-            toto.setState({data: event.detail.data, show: true});
+        document.addEventListener('astromanFormDeleteSetData', (event) => {
+            this.setState({data: event.detail.data, show: true});
         });
-        document.addEventListener('hideDeleteAstromanForm', function(event) {
-            toto.setState({show: false});
+        document.addEventListener('hideDeleteAstromanForm', () => {
+            this.setState({show: false});
         });
     }
 
     cancel()
     {
-        var unmarkRowEvent = new CustomEvent('unmarkRow');
+        const unmarkRowEvent = new CustomEvent('unmarkRow');
         document.dispatchEvent(unmarkRowEvent);
         this.setState({show: false});
     }
